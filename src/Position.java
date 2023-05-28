@@ -8,6 +8,10 @@ public class Position implements Comparable<Position>{
         this.y = y;
     }
 
+    public double range(Position a,Position b){
+        return Math.sqrt((Math.pow(a.getX()-b.getX(),2))+(Math.pow(a.getY()-b.getY(),2)));
+    }
+
     public int getX() {
         return x;
     }

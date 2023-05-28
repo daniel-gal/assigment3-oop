@@ -1,3 +1,5 @@
+
+
 public abstract class Tile implements Comparable<Tile> {
     private char tile;
     private Position position;

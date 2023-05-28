@@ -1,3 +1,4 @@
+import java.util.Observable;
 import java.util.Random;
 
 public abstract class Unit extends Tile {
