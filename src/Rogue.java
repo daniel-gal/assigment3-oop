@@ -18,34 +18,11 @@ public class Rogue extends Player {
         this.setAttack(this.getAttack()+(3*this.level));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public int castAbility() {
         return 0;
     }
 
-    @Override
-    public void accept(Unit unit) {
-
-    }
 
     @Override
     public void processStep() {

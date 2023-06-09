@@ -4,15 +4,14 @@ import java.util.Random;
 public abstract class Unit extends Tile {
 
     private String name;
-    private int healthCap;
-    private int currentHealth;
+    private Health health;
     private int attack;
     private int defense;
 
     protected Unit(char tile, String name, int healthCapacity, int attack, int defense) {
         super(tile);
         this.name = name;
-        this.healthCap = healthCapacity;
+        this.health = new Health(healthCapacity);
         this.attack = attack;
         this.defense = defense;
     }
@@ -38,44 +37,26 @@ public abstract class Unit extends Tile {
 
 	// This unit attempts to interact with another tile.
     public void interact(Tile tile){
-
+        tile.accept(this);
     }
 
-    /*
-    public void visit(Empty e){
 
+    public boolean isDead(){
+        return this.getHealth().getCurrentHealth() <= 0;
     }
 
-    public abstract void visit(Player p);
-    public abstract void visit(Enemy e);
-
-    */
 	// Combat against another unit.
-    protected boolean battle(Unit u){
-        int att;
-        int def;
-        while (u.getCurrentHealth() > 0 && this.currentHealth > 0){
-            att = this.attack();
-            def = u.defend();
-            if(att - def > 0)
-                u.setCurrentHealth(u.getCurrentHealth() - (att - def));
-            if(u.getCurrentHealth() <= 0){
-                u.onDeath();
-                return true;
-            }
-            att = u.attack();
-            def = this.defend();
-            if(att - def > 0)
-                this.setCurrentHealth(this.getCurrentHealth() - (att - def));
-
-        }
-        this.onDeath();
-        return false;
+    protected void getAttacked(int attackDamage){
+        int defense = this.defend();
+        if(attackDamage > defense)
+            health.getDamaged(attackDamage - defense);
+        if(health.isDead())
+            this.onDeath();
     }
 
 
     public String describe() {
-        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", getName(), getCurrentHealth(), getAttack(), getDefense());
+        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", getName(), getHealth().getCurrentHealth(), getAttack(), getDefense());
     }
 
     public String getName() {
@@ -86,20 +67,8 @@ public abstract class Unit extends Tile {
         this.name = name;
     }
 
-    public int getHealthCap() {
-        return healthCap;
-    }
-
-    public void setHealthCap(int healthCap) {
-        this.healthCap = healthCap;
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
+    public Health getHealth() {
+        return health;
     }
 
     public int getAttack() {

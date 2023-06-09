@@ -4,9 +4,6 @@ public class Warrior extends Player{
         private  int remainingCoolDown;
 
 
-
-
-
     public Warrior(char tile,String name,int healthCap,int currentHealth,int attack,int defense,int experience,int level,int abilityCoolDown){
         super(tile,name,healthCap,currentHealth,attack,defense,experience,level);
         this.abilityCoolDown=abilityCoolDown;
@@ -35,7 +32,8 @@ public class Warrior extends Player{
     public void warriorLevelUp(){
         this.levelUp();
         this.remainingCoolDown = 0;
-        this.setHealthCap(this.getHealthCap()+(5*this.level));
+        this.getHealth().setHealthCap(this.getHealth().getHealthCap()+(5*this.level));
+        this.getHealth().setCurrentHealth(getHealth().getHealthCap());
         this.setAttack(this.getAttack()+(2*this.level));
         this.setDefense(this.getDefense()+this.level);
     }
@@ -48,10 +46,6 @@ public class Warrior extends Player{
         return 0;
     }
 
-    @Override
-    public void accept(Unit unit) {
-
-    }
 
     @Override
     public void processStep() {

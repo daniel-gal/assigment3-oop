@@ -15,7 +15,4 @@ public class Monster extends Enemy{
 
     }
 
-    public void accept(Unit u){
-
-    }
 }

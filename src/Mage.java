@@ -34,10 +34,7 @@ public class Mage extends Player{
         return 0;
     }
 
-    @Override
-    public void accept(Unit unit) {
 
-    }
 
     @Override
     public void processStep() {

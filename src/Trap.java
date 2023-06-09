@@ -16,11 +16,9 @@ public class Trap extends Enemy {
 
     }
 
+
     public void onDeath(){
 
     }
 
-    public void accept(Unit u){
-
-    }
 }

@@ -30,8 +30,8 @@ public abstract class Player extends Unit {
         if(this.experience == this.level*50){
             this.experience = this.experience - (50*level);
             level = level +1;
-            setHealthCap(this.getHealthCap()+(10*level));
-            setCurrentHealth(this.getHealthCap());
+            this.getHealth().setHealthCap(getHealth().getHealthCap()+(10*level));
+            this.getHealth().setCurrentHealth(getHealth().getHealthCap());
             this.setAttack(this.getAttack()+(4*this.level));
             this.setDefense(this.getDefense()+this.level);
 
@@ -39,7 +39,27 @@ public abstract class Player extends Unit {
 
 
     }
+
+
+    public void accept(Tile t){t.accept(this);}
+    public void visit(Tile t) {
+        t.accept(this);
+    }
+
+    public void accept(Player p){
+        //nothing happens
+    }
+    public void accept(Enemy e){
+        getAttacked(e.attack());
+    }
+
+
     public abstract int castAbility();
+
+
+
+
+
 
 
     public void onDeath(){

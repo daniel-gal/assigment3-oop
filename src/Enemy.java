@@ -6,4 +6,21 @@ public abstract class Enemy extends Unit{
         super(tile, name, healthCapacity, attack, defense);
         this.expirience = expirience;
     }
+
+    public void accept(Player p){
+        this.getAttacked(p.attack());
+    }
+
+    public void accept(Enemy e){
+        return;
+        //nothing happens, turn goes to waste.
+    }
+
+    public void accept(Tile t){
+
+    }
+
+
+
+
 }
