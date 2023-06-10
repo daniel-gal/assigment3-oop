@@ -12,7 +12,7 @@ public abstract class Tile implements Comparable<Tile> {
         this.position = position;
     }
 
-    public abstract void accept(Tile t);
+    public abstract void accept(Unit u);
 
     public char getTile() {
         return tile;

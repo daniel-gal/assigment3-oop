@@ -40,4 +40,6 @@ public class Mage extends Player{
     public void processStep() {
 
     }
+
+
 }

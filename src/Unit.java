@@ -40,6 +40,24 @@ public abstract class Unit extends Tile {
         tile.accept(this);
     }
 
+    public  void accept(Unit u){//if unit going to intract with other unit we want to know what kind of unit we going to intract with
+        u.accept(this);//after that we will know what kind is u.
+    }
+
+    public void visit(Empty e){
+        this.setPosition(e.getPosition());
+    }
+    public void visit(Wall w){
+        return;
+        //nothing change
+    }
+
+    public abstract void visit(Player p);
+    public abstract void visit(Enemy e);
+
+
+
+
 
     public boolean isDead(){
         return this.getHealth().getCurrentHealth() <= 0;
@@ -53,6 +71,8 @@ public abstract class Unit extends Tile {
         if(health.isDead())
             this.onDeath();
     }
+
+
 
 
     public String describe() {

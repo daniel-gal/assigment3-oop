@@ -40,19 +40,26 @@ public abstract class Player extends Unit {
 
     }
 
+    public void accept(Enemy e){//parameter in unit was player now if this paremet was enemy so player going intract with enemy.
+        e.visit(this);
+        //player going to intract with enemy.
 
-    public void accept(Tile t){t.accept(this);}
-    public void visit(Tile t) {
-        t.accept(this);
+    }
+    public void accept(Player p){//parameter in unit was player now if this parmeter was player so player going intract with player.
+        p.visit(this);
+        //player going to intracte player.
+
     }
 
-    public void accept(Player p){
-        //nothing happens
-    }
-    public void accept(Enemy e){
-        getAttacked(e.attack());
-    }
+    public void visit(Enemy e){//fight
+        int attack =this.getAttack();
+        e.getAttacked(attack);
 
+    }
+    public void visit(Player p){//nothing happen
+        return;
+    //happen nothing
+    }
 
     public abstract int castAbility();
 
