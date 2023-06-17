@@ -4,8 +4,8 @@ public class Empty extends Tile{
         super('.');
     }
 
-    public void accept(Tile t){
-        /*Change positions*/
+    public void accept(Unit u) {
+        u.visit(this);
     }
 
 
