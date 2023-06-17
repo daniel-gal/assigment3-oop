@@ -3,12 +3,13 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class GameFlow {
 
     private Player player;
 
-    private LinkedList<Level> levels;
+    private LinkedList<String> levelPaths;
     public Player getPlayer() {
         return player;
     }
@@ -18,28 +19,51 @@ public class GameFlow {
     }
 
     public GameFlow() {
-        this.player = player;
-        levels = new LinkedList<Level>();
+        MassageCallback.send("Pick you player - 1 for John snow, 2 for The Hound, 3 for Melisandre, 4 for Thoros of Myr, 5 for Arya Stark, 6 Bronn ");
+        Scanner scan = new Scanner(System.in);
+        char input = scan.next().charAt(0);
+        this.player = null;
+        this.player = choosePlayer(input);
+        while (player == null){
+            MassageCallback.send("Bad input, please choose again");
+            MassageCallback.send("Pick you player - 1 for John snow, 2 for The Hound, 3 for Melisandre, 4 for Thoros of Myr, 5 for Arya Stark, 6 Bronn ");
+            input = scan.next().charAt(0);
+            this.player = choosePlayer(input);
+        }
+
+        levelPaths = new LinkedList<String>();
     }
 
+    public Player choosePlayer(char c){
+        switch (c){
+            case '1':
+                return new Warrior('@',"John Snow",300,300,30,4,0,1,3);
+            case '2':
+                return new Warrior('@',"The Hound",400,400,20,6,0,1,5);
+            case '3':
+                return new Mage('@',"Malisandre",100,100,5,1,0,1,300,300,30,15,5,6);
+            case '4':
+                return new Mage('@', "Thoros of Myr",250,250,25,4,0,1,150,150,20,20,3,4);
+            case '5':
+                return new Rogue('@', "Arya Stark",150,150,40,2,0,1,20,100);
+            case '6':
+                return new Rogue('@', "Bronn",250,250,35,3,0,1,50,100);
+            default:
+                return null;
+        }
+    }
     public void RunGame(){
         int count = 1;
-        Iterator<Level> iterLevel = levels.iterator();
+        Iterator<String> iterLevel = levelPaths.iterator();
         while (!player.isDead() && iterLevel.hasNext()){
             System.out.println("level number " + count);
-            iterLevel.next().RunLevel();
+            LoadLevel(iterLevel.next()).RunLevel();
         }
-
-        if(player.isDead()){
-            //You suck
-        }
-        else {
-            //You won, you probably have a dick bigger than barami's.
-        }
+        if(!player.isDead())
+            MassageCallback.send("Congratulations! you won!");
     }
-    public Level LoadLevel(){
+    public Level LoadLevel(String pathString){
 
-        String pathString = "C:\\Users\\Menashe\\Desktop\\Degree\\Sem B\\Oop\\hw3 git\\levels_dir\\levels_dir\\level1.txt";
         Path path = Path.of(pathString);
         String value = "";
         try {
@@ -57,7 +81,6 @@ public class GameFlow {
             heights[y] = heights[y].replace("\r","");
             for(int x = 0; x < heights[y].length(); x++){
                 char c = heights[y].charAt(x);
-                System.out.println(x + "" + y +"" + c);
                 Tile t = processChar(c, monsters,traps);
                 t.initialize(new Position(x,y));
                 level.put(t.getPosition(), t);
@@ -108,7 +131,7 @@ public class GameFlow {
                 return new Monster('q',"Queen Guard",400,20,15,100,5);
             case 'z':
                 return new Monster('w',"Wright",600,30,15,100,3);
-            case 'p':
+            case 'b':
                 return new Monster('p',"Bear-Wright",1000,75,30,250,4);
             case 'g':
                 return new Monster('g',"Giant-Wright",1500,100,40,500,5);
@@ -124,9 +147,10 @@ public class GameFlow {
         return null;
     }
 
-    public void testLevel(){
-        levels.add(LoadLevel());
+    public void insertLevel(String path){
+        levelPaths.add(path);
     }
+
 
 
 

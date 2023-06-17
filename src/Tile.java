@@ -18,6 +18,10 @@ public abstract class Tile implements Comparable<Tile> {
         return tile;
     }
 
+    public void setTile(char tile) {
+        this.tile = tile;
+    }
+
     public Position getPosition() {
         return position;
     }
