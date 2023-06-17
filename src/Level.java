@@ -23,7 +23,8 @@ public class Level {
         System.out.println(currentBoardString());
         while (finished() == 0){
             RunTick();
-            System.out.println(currentBoardString());
+            MassageCallback.send(player.describe());
+            MassageCallback.send(currentBoardString());
         }
     }
 
@@ -42,21 +43,38 @@ public class Level {
 
             updateInteraction(prePosPlayer, prePosTile, player, tileTo);
 
-            Iterator<Monster> monsterIterator = monsters.iterator();
-            while (monsterIterator.hasNext()){
-                Monster m = monsterIterator.next();
-                if(m.isDead()) {
-                    gameboard.remove(m.getPosition());
-                    monsterIterator.remove();
+            player.processStep();
 
-                    Empty e = new Empty();
-                    e.initialize(new Position(m.getPosition().getX(), m.getPosition().getY()));
-                    gameboard.put(e.getPosition(), e);
 
-                    m.onDeath();
-                }
+        }
+        Iterator<Monster> monsterIterator = monsters.iterator();
+        while (monsterIterator.hasNext()){
+            Monster m = monsterIterator.next();
+            if(m.isDead()) {
+                gameboard.remove(m.getPosition());
+                monsterIterator.remove();
+
+                Empty e = new Empty();
+                e.initialize(new Position(m.getPosition().getX(), m.getPosition().getY()));
+                gameboard.put(e.getPosition(), e);
+
             }
         }
+
+        Iterator<Trap> trapIterator = traps.iterator();
+        while (trapIterator.hasNext()){
+            Trap t = trapIterator.next();
+            if(t.isDead()) {
+                gameboard.remove(t.getPosition());
+                trapIterator.remove();
+
+                Empty e = new Empty();
+                e.initialize(new Position(t.getPosition().getX(), t.getPosition().getY()));
+                gameboard.put(e.getPosition(), e);
+
+            }
+        }
+
 
         for (Monster m :monsters) {
 
@@ -75,6 +93,7 @@ public class Level {
             }
         }
         for (Trap t :traps) {
+            t.IncrementTick();
             if(t.getPosition().compareTo(player.getPosition()) < 2)
                 t.interact(player);
         }
@@ -106,12 +125,23 @@ public class Level {
             case 'd':
                 return gameboard.get(new Position(player.getPosition().getX() + 1, player.getPosition().getY() ));
             case 'e':
-                //Special ability.
+                CastAbillity();
             case 'q':
                 return null; //do nothing.
 
         }
         return null;
+    }
+
+    public void CastAbillity(){
+        LinkedList<Enemy> enemiesInRange = new LinkedList<Enemy>();
+        for(Monster m: monsters)
+            if(m.compareTo(player) < player.getAbillityRange())
+                enemiesInRange.add(m);
+        for(Trap t: traps)
+            if(t.compareTo(player) < player.getAbillityRange())
+                enemiesInRange.add(t);
+        player.castAbility(enemiesInRange);
     }
     public int finished(){
         if(player.isDead())

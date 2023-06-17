@@ -1,7 +1,6 @@
 public class MassageCallback {
 
-
-    void Send(String massage);
-
-
+    public static void send(String s){
+        System.out.println(s);
+    }
 }

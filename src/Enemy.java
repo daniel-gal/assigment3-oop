@@ -18,6 +18,7 @@ public class Enemy extends Unit{
 
 
     public void visit(Player p){//enemy meet with player
+        MassageCallback.send(this.getName() + " has initiated combat with " + p.getName());
         int attack = this.getAttack();
         p.getAttacked(attack);
     }

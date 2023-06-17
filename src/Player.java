@@ -1,6 +1,10 @@
+import java.util.LinkedList;
+
 public abstract class Player extends Unit {
     Integer experience;
     Integer level;
+
+    private int abillityRange;
 
 
 
@@ -26,18 +30,13 @@ public abstract class Player extends Unit {
         this.level = level;
     }
 
-    public void levelUp(){
-        if(this.experience == this.level*50){
-            this.experience = this.experience - (50*level);
-            level = level +1;
-            this.getHealth().setHealthCap(getHealth().getHealthCap()+(10*level));
-            this.getHealth().setCurrentHealth(getHealth().getHealthCap());
-            this.setAttack(this.getAttack()+(4*this.level));
-            this.setDefense(this.getDefense()+this.level);
-
-        }
-
-
+    public void levelUp() {
+        this.experience = Math.max(this.experience - (50 * level),0);
+        level = level + 1;
+        this.getHealth().setHealthCap(getHealth().getHealthCap() + (10 * level));
+        this.getHealth().setCurrentHealth(getHealth().getHealthCap());
+        this.setAttack(this.getAttack() + (4 * this.level));
+        this.setDefense(this.getDefense() + this.level);
     }
 
     public void accept(Unit u){
@@ -55,6 +54,7 @@ public abstract class Player extends Unit {
     }
 
     public void visit(Enemy e){//fight
+        MassageCallback.send(this.getName() + " has initiated combat with " + e.getName());
         int attack =this.getAttack();
         e.getAttacked(attack);
         if(e.getHealth().isDead()){
@@ -62,7 +62,6 @@ public abstract class Player extends Unit {
             e.setPosition(this.getPosition());
             this.setPosition(temp);
             this.experience += e.getExpirience();
-            levelUp();
         }
 
     }
@@ -71,19 +70,22 @@ public abstract class Player extends Unit {
     //happen nothing
     }
 
-    public abstract int castAbility();
+    public abstract int castAbility(LinkedList<Enemy> enemies);
 
 
-
-
-
-
-
-    public void onDeath(){
-        System.out.println("game over");
+    public int getAbillityRange() {
+        return abillityRange;
     }
 
+    public void setAbillityRange(int abillityRange) {
+        this.abillityRange = abillityRange;
+    }
 
+    public void onDeath(){
+        MassageCallback.send("Game over");
+    }
+
+    public abstract void processStep();
 
 
 }

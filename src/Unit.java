@@ -65,8 +65,11 @@ public abstract class Unit extends Tile {
     // Combat against another unit.
     protected void getAttacked(int attackDamage){
         int defense = this.defend();
-        if(attackDamage > defense)
+        MassageCallback.send("Attack roll - " + attackDamage + " Defense roll - " + defense);
+        if(attackDamage > defense) {
             health.getDamaged(attackDamage - defense);
+            MassageCallback.send(attackDamage - defense + " damage was taken");
+        }
         if(health.isDead())
             this.onDeath();
     }
