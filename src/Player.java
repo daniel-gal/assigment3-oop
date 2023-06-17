@@ -40,6 +40,9 @@ public abstract class Player extends Unit {
 
     }
 
+    public void accept(Unit u){
+        u.visit(this);
+    }
     public void accept(Enemy e){//parameter in unit was player now if this paremet was enemy so player going intract with enemy.
         e.visit(this);
         //player going to intract with enemy.
@@ -54,6 +57,13 @@ public abstract class Player extends Unit {
     public void visit(Enemy e){//fight
         int attack =this.getAttack();
         e.getAttacked(attack);
+        if(e.getHealth().isDead()){
+            Position temp = e.getPosition();
+            e.setPosition(this.getPosition());
+            this.setPosition(temp);
+            this.experience += e.getExpirience();
+            levelUp();
+        }
 
     }
     public void visit(Player p){//nothing happen
@@ -72,6 +82,7 @@ public abstract class Player extends Unit {
     public void onDeath(){
         System.out.println("game over");
     }
+
 
 
 

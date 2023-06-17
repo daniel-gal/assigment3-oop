@@ -27,18 +27,22 @@ public class Mage extends Player{
         this.spellPower = spellPower+(10*this.level);
     }
 
+    public Integer getCurrentMana() {
+        return currentMana;
+    }
 
+    public Integer getSpellPower() {
+        return spellPower;
+    }
 
     @Override
     public int castAbility() {
         return 0;
     }
 
-
-
     @Override
-    public void processStep() {
-
+    public String describe() {
+        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d \t\tLevel: %d \t\tExperience: %d \t\tCurrent Mana: %d \t\tSpell Power: %d ", getName(), getHealth().getCurrentHealth(), getAttack(), getDefense(), getLevel(), getExperience(), getCurrentMana(), getSpellPower());
     }
 
 

@@ -19,7 +19,7 @@ public abstract class Unit extends Tile {
     protected void initialize(Position position){
         this.setPosition(position);
     }
-	
+
     protected int attack(){
 
         return (int)Math.floor(this.attack * Math.random());
@@ -29,23 +29,22 @@ public abstract class Unit extends Tile {
         return (int)Math.floor(this.defense * Math.random());
     }
 
-	// Should be automatically called once the unit finishes its turn
-    public abstract void processStep();
-	
-	// What happens when the unit dies
+
+
+    // What happens when the unit dies
     public abstract void onDeath();
 
-	// This unit attempts to interact with another tile.
+    // This unit attempts to interact with another tile.
     public void interact(Tile tile){
         tile.accept(this);
     }
 
-    public  void accept(Unit u){//if unit going to intract with other unit we want to know what kind of unit we going to intract with
-        u.accept(this);//after that we will know what kind is u.
-    }
+    public  abstract  void accept(Unit u);
 
     public void visit(Empty e){
+        Position temp = this.getPosition();
         this.setPosition(e.getPosition());
+        e.setPosition(temp);
     }
     public void visit(Wall w){
         return;
@@ -63,7 +62,7 @@ public abstract class Unit extends Tile {
         return this.getHealth().getCurrentHealth() <= 0;
     }
 
-	// Combat against another unit.
+    // Combat against another unit.
     protected void getAttacked(int attackDamage){
         int defense = this.defend();
         if(attackDamage > defense)

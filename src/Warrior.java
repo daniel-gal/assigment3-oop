@@ -46,9 +46,10 @@ public class Warrior extends Player{
         return 0;
     }
 
-
     @Override
-    public void processStep() {
-
+    public String describe() {
+        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d \t\tLevel: %d \t\tExperience: %d \t\tCD: %d", getName(), getHealth().getCurrentHealth(), getAttack(), getDefense(), getLevel(), getExperience(), getRemainingCoolDown());
     }
+
+
 }

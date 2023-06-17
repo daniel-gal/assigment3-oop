@@ -7,6 +7,10 @@ public class Monster extends Enemy{
         this.visionRange = visionRange;
     }
 
+    public int getVisionRange() {
+        return visionRange;
+    }
+
     public void processStep(){
 
     }

@@ -1,4 +1,4 @@
-public abstract class Enemy extends Unit{
+public class Enemy extends Unit{
 
     private int expirience;
 
@@ -7,6 +7,7 @@ public abstract class Enemy extends Unit{
         this.expirience = expirience;
     }
 
+    public void accept(Unit u){u.visit(this);}
     public void accept(Player p){//unit intrace method get enemy paremeter. now if this in unit was player so its we have player intracte with enemy.
         p.visit(this);
     }
@@ -25,10 +26,13 @@ public abstract class Enemy extends Unit{
         //do nothing cause its enemy vs enemy.
     }
 
+    public int getExpirience() {
+        return expirience;
+    }
 
+    public void setExpirience(int expirience) {
+        this.expirience = expirience;
+    }
 
-
-
-
-
+    public void onDeath(){}
 }
